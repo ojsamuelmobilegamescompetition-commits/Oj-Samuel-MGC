@@ -1,0 +1,28 @@
+OJ SAMUEL MATCH CENTRE — INSTALLATION
+
+FILES
+1. Replace the repository index.html with index-updated.html (or use the included updated index.html).
+2. Add admin.html to the same repository root as index.html.
+3. Add oj-match-center.js to the same repository root.
+4. Add oj-tournament-engine.sql to your Supabase SQL Editor.
+5. Keep your existing supabase-config.js in the repository root. Do not upload service_role credentials.
+
+SUPABASE CONFIG
+supabase-config.js must define:
+window.OJ_SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
+window.OJ_SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY";
+Use only the anon/publishable key in browser files. Never put a service_role/secret key in HTML or JavaScript.
+
+DATABASE PREREQUISITE
+The SQL expects your existing CMS setup to have created public.is_oj_admin(), and your existing admin user to be listed in public.admin_users as required by that function. Run your existing CMS setup first, then run oj-tournament-engine.sql. The SQL does not create or change your registrations table.
+
+DEPLOY
+Commit the files to the root of the same GitHub repository and wait for your static host to redeploy. Then visit /admin.html.
+
+IMPORTANT SECURITY
+- RLS protects the match table; hiding the admin screen is not security by itself.
+- The SQL permits public reads only for scheduled/approved fixtures. Writes and access to pending/rejected rows require is_oj_admin().
+- If your existing is_oj_admin() function has a different signature or returns something other than boolean true, this package needs adjustment.
+- Public registration inserts in index.html depend on your existing registrations RLS policy. Do not enable public SELECT on registrations because it contains phone numbers.
+- No Supabase credentials were supplied in this chat, so the site cannot be connected or activated from here. Add your own project URL and anon/publishable key locally.
+- Test first with a non-sensitive test tournament and two approved test registrations.
